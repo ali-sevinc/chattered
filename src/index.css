@@ -28,5 +28,6 @@
     border-radius: 12px;
     width: 100%;
     text-wrap: wrap;
+    overflow-x: scroll;
   }
 }

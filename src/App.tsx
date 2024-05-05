@@ -1,7 +1,7 @@
-import { ChatSession } from "@google/generative-ai";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { generationConfig, model, safetySettings } from "./ChatInit";
 
+import { ChatSession } from "@google/generative-ai";
+import { generationConfig, model, safetySettings } from "./ChatInit";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -79,13 +79,19 @@ export default function Chat() {
     function () {
       if (!chatRef.current) return;
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      // const rect = chatRef.current.getBoundingClientRect();
+      // console.log(chatRef.current.scrollHeight);
+      // window.scrollTo({
+      //   left: 0,
+      //   top: chatRef.current.scrollHeight,
+      //   behavior: "smooth",
+      // });
     },
     [messages]
   );
-  // console.log(messages);
 
   return (
-    <div className="h-screen flex flex-col max-w-6xl mx-auto pb-2">
+    <div className="h-screen flex flex-col max-w-6xl mx-4 lg:mx-auto pb-2">
       <header className="border-b py-4">
         <h1 className="text-4xl text-center text-stone-50 flex items-center justify-center gap-2 font-semibold ">
           <img src="/chat.png" alt="chat bubble" className="w-20" />
@@ -96,12 +102,14 @@ export default function Chat() {
       <ol
         id="myList"
         ref={chatRef}
-        className="flex-1 overflow-y-scroll text-stone-50 px-8 py-4"
+        className="flex-1 overflow-y-scroll text-stone-50 space-y-2 px-8 py-4"
       >
         {messages.map((msg, index) => (
           <li
             key={index}
-            className={`${msg.role === "user" ? "text-right" : "text-left"}`}
+            className={`${
+              msg.role === "user" ? "text-right" : "text-left"
+            } bg-zinc-800 px-2 py-2 rounded-xl`}
           >
             <Markdown
               remarkPlugins={[remarkGfm]}
@@ -109,14 +117,16 @@ export default function Chat() {
             >
               {msg.text}
             </Markdown>
-            <p className="italic text-stone-700 font-semibold bg-stone-200 inline">
+            <p className="italic text-stone-700 font-semibold bg-stone-200 px-1 rounded inline">
               {msg.role === "user" ? "You" : "Bot"} -{" "}
               {new Date(msg.timestamp).toLocaleTimeString()}
             </p>
           </li>
         ))}
         {isGenerating && (
-          <li className="text-left animate-pulse">Generating...</li>
+          <li className="text-left animate-pulse text-lg text-yellow-200">
+            Generating...
+          </li>
         )}
       </ol>
       {error && <p className="text-red-500">{error}</p>}
