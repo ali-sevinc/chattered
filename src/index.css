@@ -17,16 +17,14 @@
     background: #555;
   }
 
-  code {
-    background-color: #333;
-    color: #fff;
+  /* code {
     display: inline-block;
     padding: 1rem;
     border-radius: 12px;
     width: 100%;
     text-wrap: wrap;
     overflow-x: scroll;
-  }
+  } */
 }
 .prose {
   max-width: 100%;

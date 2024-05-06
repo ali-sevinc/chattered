@@ -102,14 +102,14 @@ export default function Chat() {
       <ol
         id="myList"
         ref={chatRef}
-        className="flex-1 overflow-y-scroll text-stone-50 space-y-2 px-8 py-4"
+        className="flex-1 overflow-y-scroll text-stone-50 space-y-2 px-2 sm:px-8 py-4"
       >
         {messages.map((msg, index) => (
           <li
             key={index}
             className={`${
               msg.role === "user" ? "text-right" : "text-left"
-            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose prose-strong:text-zinc-50 pro text-zinc-50`}
+            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose-ul:m-0 prose-li:m-0 prose prose-pre:m-0 prose-strong:text-zinc-50 prose-p:m-0 prose-code:text-zinc-50 text-zinc-50`}
           >
             <Markdown
               remarkPlugins={[remarkGfm]}
@@ -132,16 +132,16 @@ export default function Chat() {
       {error && <p className="text-red-500">{error}</p>}
       <form
         onSubmit={handleSubmit}
-        className=" group flex mt-12 items-center rounded-lg focus-within:ring-offset-2 focus-within:ring-2 focus-within:ring-blue-500"
+        className=" group flex mt-12 items-center rounded-lg focus-within:ring-offset-2 bg-zinc-600 focus-within:ring-2 focus-within:ring-blue-500"
       >
         <input
-          className="w-full text-2xl px-4 py-2 border h-20 rounded-l-lg focus:outline-none"
+          className="w-full text-2xl px-4 py-2 border-none bg-transparent h-20 text-zinc-50 rounded-l-lg focus:outline-none"
           placeholder="Ask to Bot!"
           value={enteredQuery}
           onChange={(e) => setEnteredQuery(e.target.value)}
         />
         <button className="text-2xl font-bold px-4 py-2 border h-20 hover:bg-stone-200 w-20 rounded-r-lg bg-stone-50">
-          &darr;
+          &dlarr;
         </button>
       </form>
     </div>
