@@ -109,11 +109,11 @@ export default function Chat() {
             key={index}
             className={`${
               msg.role === "user" ? "text-right" : "text-left"
-            } bg-zinc-800 px-2 py-2 rounded-xl`}
+            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose prose-strong:text-zinc-50 pro text-zinc-50`}
           >
             <Markdown
               remarkPlugins={[remarkGfm]}
-              className="text-lg whitespace-pre-wrap myMarkdowns"
+              className="text-lg whitespace-pre-wrap myMarkdowns "
             >
               {msg.text}
             </Markdown>

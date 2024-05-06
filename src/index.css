@@ -16,10 +16,7 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
-  ul {
-    padding-left: 1rem !important;
-    list-style: disc !important;
-  }
+
   code {
     background-color: #333;
     color: #fff;
@@ -30,4 +27,7 @@
     text-wrap: wrap;
     overflow-x: scroll;
   }
+}
+.prose {
+  max-width: 100%;
 }
