@@ -2,8 +2,10 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { ChatSession } from "@google/generative-ai";
 import { generationConfig, model, safetySettings } from "./chatInit";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+
+import MessageItem from "./components/MessageItem";
+import Header from "./components/Header";
+import ChatForm from "./components/ChatForm";
 
 type MessageType = {
   text: string;
@@ -98,12 +100,7 @@ export default function Chat() {
 
   return (
     <div className="h-screen flex flex-col max-w-6xl mx-4 lg:mx-auto pb-2">
-      <header className="border-b py-4">
-        <h1 className="text-4xl text-center text-stone-50 flex items-center justify-center gap-2 font-semibold ">
-          <img src="/chat.png" alt="chat bubble" className="w-20" />
-          <span>Chattered</span>
-        </h1>
-      </header>
+      <Header />
 
       <ol
         id="myList"
@@ -111,23 +108,12 @@ export default function Chat() {
         className="flex-1 overflow-y-scroll text-stone-50 space-y-2 px-2 sm:px-8 py-4"
       >
         {messages.map((msg, index) => (
-          <li
+          <MessageItem
             key={index}
-            className={`${
-              msg.role === "user" ? "text-right" : "text-left"
-            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose-ul:m-0 prose prose-a:text-blue-200 prose-li:m-0  prose-pre:m-0 prose-strong:text-zinc-50 prose-p:m-0 prose-code:text-zinc-50 text-zinc-50`}
-          >
-            <Markdown
-              remarkPlugins={[remarkGfm]}
-              className="text-lg whitespace-pre-wrap myMarkdowns "
-            >
-              {msg.text}
-            </Markdown>
-            <p className="italic text-stone-700 font-semibold bg-stone-200 px-1 rounded inline">
-              {msg.role === "user" ? "You" : "Bot"} -{" "}
-              {new Date(msg.timestamp).toLocaleTimeString()}
-            </p>
-          </li>
+            role={msg.role}
+            text={msg.text}
+            timestamp={msg.timestamp}
+          />
         ))}
         {isGenerating && (
           <li className="text-left animate-pulse text-lg text-yellow-200">
@@ -136,20 +122,12 @@ export default function Chat() {
         )}
       </ol>
       {error && <p className="text-red-500">{error}</p>}
-      <form
+
+      <ChatForm
         onSubmit={handleSubmit}
-        className=" group flex mt-12 items-center rounded-lg focus-within:ring-offset-2 bg-zinc-600 focus-within:ring-2 focus-within:ring-blue-500"
-      >
-        <input
-          className="w-full text-2xl px-4 py-2 border-none bg-transparent h-20 text-zinc-50 rounded-l-lg focus:outline-none"
-          placeholder="Ask to Bot!"
-          value={enteredQuery}
-          onChange={(e) => setEnteredQuery(e.target.value)}
-        />
-        <button className="text-2xl font-bold px-4 py-2 border h-20 hover:bg-stone-200 w-20 rounded-r-lg bg-stone-50">
-          &darr;
-        </button>
-      </form>
+        value={enteredQuery}
+        onChange={(e) => setEnteredQuery(e)}
+      />
     </div>
   );
 }
