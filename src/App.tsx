@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { ChatSession } from "@google/generative-ai";
-import { generationConfig, model, safetySettings } from "./ChatInit";
+import { generationConfig, model, safetySettings } from "./chatInit";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -35,6 +35,7 @@ export default function Chat() {
         setChat(newChat);
       } catch (error) {
         setError("Failed to initialize.");
+        setChat(null);
       }
     }
     chatInit();
@@ -43,6 +44,7 @@ export default function Chat() {
   async function handleMessage() {
     try {
       setIsGenerating(true);
+      setError("");
       const userMessage = {
         text: enteredQuery,
         role: "user",
@@ -64,6 +66,7 @@ export default function Chat() {
       }
     } catch (error) {
       setError("Failed to create message.");
+      setChat(null);
     } finally {
       setIsGenerating(false);
     }
@@ -79,15 +82,18 @@ export default function Chat() {
     function () {
       if (!chatRef.current) return;
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
-      // const rect = chatRef.current.getBoundingClientRect();
+      // chatRef.current.scrollIntoView({ behavior: "smooth" });
       // console.log(chatRef.current.scrollHeight);
+
+      // const height = chatRef.current.scrollHeight;
+      // console.log(height);
+      // console.log(window.innerHeight);
       // window.scrollTo({
-      //   left: 0,
       //   top: chatRef.current.scrollHeight,
       //   behavior: "smooth",
       // });
     },
-    [messages]
+    [messages, chatRef]
   );
 
   return (
@@ -109,7 +115,7 @@ export default function Chat() {
             key={index}
             className={`${
               msg.role === "user" ? "text-right" : "text-left"
-            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose-ul:m-0 prose-li:m-0 prose prose-pre:m-0 prose-strong:text-zinc-50 prose-p:m-0 prose-code:text-zinc-50 text-zinc-50`}
+            } bg-zinc-800 px-2 py-2 rounded-xl w-full prose-ul:m-0 prose prose-a:text-blue-200 prose-li:m-0  prose-pre:m-0 prose-strong:text-zinc-50 prose-p:m-0 prose-code:text-zinc-50 text-zinc-50`}
           >
             <Markdown
               remarkPlugins={[remarkGfm]}
@@ -141,7 +147,7 @@ export default function Chat() {
           onChange={(e) => setEnteredQuery(e.target.value)}
         />
         <button className="text-2xl font-bold px-4 py-2 border h-20 hover:bg-stone-200 w-20 rounded-r-lg bg-stone-50">
-          &dlarr;
+          &darr;
         </button>
       </form>
     </div>
