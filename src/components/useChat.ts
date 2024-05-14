@@ -73,7 +73,13 @@ export default function useChat() {
   useEffect(
     function () {
       if (!chatRef.current) return;
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+
+      const chatContainer = chatRef.current;
+      const lastMessage = chatContainer.lastElementChild;
+
+      if (lastMessage) {
+        lastMessage.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
     },
     [messages, chatRef]
   );
